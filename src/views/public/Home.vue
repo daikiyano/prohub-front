@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <h1>{{message}}</h1>
-    <h1 @click="getTag()">テスト</h1>
     <li v-for="tag in state.tags" :key="tag.id">
         <h2> {{ tag.name }}</h2>
       </li>
@@ -10,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,ref,reactive } from 'vue';
+import { defineComponent,ref,reactive,onMounted } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import Tag from '@/types/Tag';
 import axios from 'axios'
@@ -31,16 +30,20 @@ export default defineComponent({
       tags: []
     })
 
-    const getTag = async () => {
+    onMounted(async () => {
       const response = await axios.get('http://localhost:3000/api/v1/public/sites')
       state.tags = response.data
-      console.log(state.tags)
       
-    }
+    })
+    // 通常メソッドの書き方
+    // const getTag = async () => {
+    //   const response = await axios.get('http://localhost:3000/api/v1/public/sites')
+    //   // state.tags = response.data
+    //   // console.log(state.tags)      
+    // }
 
     return {
       message,
-      getTag,
       state
     }
   }
