@@ -11,8 +11,8 @@
 <script lang="ts">
 import { defineComponent,ref,reactive,onMounted } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-import Tag from '@/types/Tag';
-import axios from 'axios'
+import Tag from '@/types/tag';
+import axios from "@/lib/axios"
 
 
 interface State {
@@ -31,8 +31,11 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      const response = await axios.get('http://localhost:3000/api/v1/public/sites')
+      console.log(process.env.NODE_ENV)
+      const response = await axios.get('/api/v1/public/sites')
       state.tags = response.data
+      console.log("heyy")
+      
       
     })
     // 通常メソッドの書き方
