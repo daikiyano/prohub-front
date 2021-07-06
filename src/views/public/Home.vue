@@ -1,16 +1,16 @@
 <template>
   <div class="home">
     <h1>{{message}}</h1>
-    <li v-for="tag in state.tags" :key="tag.id">
+    <!-- <li v-for="tag in state.tags" :key="tag.id">
         <h2> {{ tag.name }}</h2>
-      </li>
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+      </li> -->
+    <TagList msg="Welcome to Your Vue.js + TypeScript App" :tags='state.tags'/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent,ref,reactive,onMounted } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import TagList from '@/components/TagList.vue'; // @ is an alias to /src
 import Tag from '@/types/tag';
 import axios from "@/lib/axios"
 
@@ -22,7 +22,7 @@ interface State {
 export default defineComponent({
   name: 'Home',
   components: {
-    HelloWorld,
+    TagList,
   },
   setup() {
     const message = ref("Hello Worlds");
