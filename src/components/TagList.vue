@@ -1,17 +1,24 @@
 <template>
-  <div class="hello">
-    <li v-for="tag in tags" :key="tag.id">
-        <h2> {{ tag.name }}</h2>
-      </li>   
+  <div class="hello" style="width: 200px;">
+    <span v-for="tag in tags" :key="tag.id">
+      <PrimeTag :value="tag.name"></PrimeTag>
+
+        <!-- <h2> {{ tag.name }}</h2> -->
+      </span>   
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent,PropType } from 'vue';
 import Tag from '@/types/tag';
+import PrimeTag from 'primevue/tag';
+
 
 export default defineComponent({
   name: 'TagList',
+  components: {
+    PrimeTag,
+  },
   props: {
     tags: {
       required: true,
@@ -23,21 +30,6 @@ export default defineComponent({
   }
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
