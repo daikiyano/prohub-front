@@ -24,3 +24,12 @@ export const logout = async () => {
       removeAuthDataFromStorage()
     })
 }
+
+export const checkToken = async () => {
+  console.log("heyyy")
+  return await axios.get('/api/v1/admin_auth/validate_token', { headers: getAuthDataFromStorage() })
+    .then((res) => {
+      console.log(res)
+      return res
+    })
+}

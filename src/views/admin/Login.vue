@@ -14,13 +14,16 @@
     <button @click="handleLogin()">
     Sign In
   </button>
+   <button @click="checkAuth()">
+    認証チェック
+  </button>
   </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent,reactive, toRefs } from 'vue';
-import { login } from '@/api/auth';
+import { login,checkToken } from '@/api/admin/auth';
 
 
 export default defineComponent({
@@ -30,6 +33,22 @@ export default defineComponent({
       email: '',
       password: ''
     })
+    // const checkAuth = () => {
+    //   console.log("checkouth");
+    // };
+    const checkAuth = async () => {
+      console.log("aaa")
+      await checkToken().then((res) => {
+          if (res.status === 200) {
+            console.log(res)
+          } else {
+            alert('認証が正しくありません')
+          }
+          })
+        .catch(() => {
+          alert('ログインに失敗しました。')
+        })
+    }
     return {
       ...toRefs(formData),
       handleLogin: async () => {
@@ -44,7 +63,8 @@ export default defineComponent({
         .catch(() => {
           alert('ログインに失敗しました。')
         })
-    }
+    },
+    checkAuth
     }
   }
 });
