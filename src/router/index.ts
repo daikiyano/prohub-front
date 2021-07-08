@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/public/Home.vue'
 import Login from '../views/admin/Login.vue'
+import NewSite from '../views/admin/sites/NewSite.vue'
+
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -13,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/admin/sites/new',
+    name: 'NewSite',
+    component: NewSite
   },
   {
     path: '/about',
