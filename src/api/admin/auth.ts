@@ -2,7 +2,7 @@ import { AdminUser } from '@/types/admin-user'
 import {
   getAuthDataFromStorage,
   removeAuthDataFromStorage,
-  setAuthDataFromResponse
+  setAuthAdminDataFromResponse
 } from '@/utils/auth-data'
 import axios from "@/lib/axios"
 import { AxiosResponse, AxiosError } from 'axios'
@@ -10,7 +10,8 @@ import { AxiosResponse, AxiosError } from 'axios'
 export const login = async (email: string, password: string) => {
   return await axios.post<AdminUser>('/api/v1/admin_auth/sign_in', { email, password })
     .then((res: AxiosResponse<AdminUser>) => {
-      setAuthDataFromResponse(res.headers)
+      console.log(res.data)
+      setAuthAdminDataFromResponse(res.headers,res.data)
       return res
     })
     .catch((err: AxiosError) => {
@@ -25,11 +26,6 @@ export const logout = async () => {
     })
 }
 
-export const checkToken = async () => {
-  console.log("heyyy")
+export const judgeAdminAuthToken = async () => {
   return await axios.get('/api/v1/admin_auth/validate_token', { headers: getAuthDataFromStorage() })
-    .then((res) => {
-      console.log(res)
-      return res
-    })
 }

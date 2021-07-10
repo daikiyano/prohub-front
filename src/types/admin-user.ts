@@ -4,4 +4,6 @@ export type AdminUser = {
   id: string;
   provider: string;
   uid: string;
+  // admin: string;
+  data: any;
 }
