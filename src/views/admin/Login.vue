@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent,reactive, toRefs } from 'vue';
-import { login,checkToken } from '@/api/admin/auth';
+import { login,judgeAdminAuthToken } from '@/api/admin/auth';
 
 
 export default defineComponent({
@@ -37,17 +37,8 @@ export default defineComponent({
     //   console.log("checkouth");
     // };
     const checkAuth = async () => {
-      console.log("aaa")
-      await checkToken().then((res) => {
-          if (res.status === 200) {
-            console.log(res)
-          } else {
-            alert('認証が正しくありません')
-          }
-          })
-        .catch(() => {
-          alert('ログインに失敗しました。')
-        })
+      console.log("aassa")
+      const data = await judgeAdminAuthToken().catch(() => alert('ログインに失敗しました。'));
     }
     return {
       ...toRefs(formData),
