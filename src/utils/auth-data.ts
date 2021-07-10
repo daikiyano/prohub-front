@@ -30,7 +30,3 @@ export const removeAuthDataFromStorage = (): void => {
   localStorage.removeItem('expiry')
   localStorage.removeItem('admin')
 }
-
-export const isAdmin = () => {
-  return localStorage.getItem('admin') || false
-}

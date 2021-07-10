@@ -2,6 +2,7 @@
   <div>
     <Menubar :model="items">
       <template #start>
+        <div v-if="!isAdmin">aa</div>
         <img alt="logo" src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" height="40" class="p-mr-2">
       </template>
       <template #end>
@@ -13,7 +14,14 @@
 
 <script lang="ts">
 import { defineComponent,ref } from 'vue';
+import {
+  removeAuthDataFromStorage
+} from '@/utils/auth-data'
+import { useRouter } from 'vue-router'
+
+//Prime Vue
 import Menubar from 'primevue/menubar';
+// import { useToast } from "primevue/usetoast";
 
 
 
@@ -24,108 +32,41 @@ export default defineComponent({
   },
  
   setup(){
+    // ルーティング定義
+    const router = useRouter()
+   // Prime vue
+    
+    const isAdmin = localStorage.getItem('admin')
     const items = ref([
             {
-               label:'File',
-               icon:'pi pi-fw pi-file',
-               items:[
-                    {
-                        label:'New',
-                        icon:'pi pi-fw pi-plus',
-                        items:[
-                            {
-                                label:'Bookmark',
-                                icon:'pi pi-fw pi-bookmark'
-                            },
-                            {
-                                label:'Video',
-                                icon:'pi pi-fw pi-video'
-                            },
-                        ]
-                    },
-                    {
-                        label:'Delete',
-                        icon:'pi pi-fw pi-trash'
-                    },
-                    {
-                        separator:true
-                    },
-                    {
-                        label:'Export',
-                        icon:'pi pi-fw pi-external-link'
-                    }
-               ]
-            },
-            {
-               label:'Users',
-               icon:'pi pi-fw pi-user',
-               items:[
-                    {
-                        label:'New',
-                        icon:'pi pi-fw pi-user-plus',
-                    },
-                    {
-                        label:'Delete',
-                        icon:'pi pi-fw pi-user-minus',
-                    },
-                    {
-                        label:'Search',
-                        icon:'pi pi-fw pi-users',
-                        items:[
-                            {
-                                label:'Filter',
-                                icon:'pi pi-fw pi-filter',
-                                items:[
-                                    {
-                                        label:'Print',
-                                        icon:'pi pi-fw pi-print'
-                                    }
-                                ]
-                            },
-                            {
-                                icon:'pi pi-fw pi-bars',
-                                label:'List'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label:'Events',
+                label:'サイト',
                 icon:'pi pi-fw pi-calendar',
                 items:[
                     {
-                        label:'Edit',
+                        label:'一覧',
                         icon:'pi pi-fw pi-pencil',
-                        items:[
-                            {
-                                label:'Save',
-                                icon:'pi pi-fw pi-calendar-plus'
-                            },
-                            {
-                                label:'Delete',
-                                icon:'pi pi-fw pi-calendar-minus'
-                            },
-                        ]
+                        to: "/admin/sites",
+                        command: () => {
+                          router.push('/admin/sites')
+                        }
+                       
                     },
-                    {
-                        label:'Archieve',
-                        icon:'pi pi-fw pi-calendar-times',
-                        items:[
-                            {
-                                label:'Remove',
-                                icon:'pi pi-fw pi-calendar-minus'
-                            }
-                        ]
-                    }
+                 
                ]
             },
             {
-               label:'Quit',
-               icon:'pi pi-fw pi-power-off'
+               label: isAdmin ? "Log out" : "Log in",
+               icon:'pi pi-fw pi-power-off',
+               command: () => {
+                if (isAdmin) {
+                  removeAuthDataFromStorage()
+                  router.push('/admin/login')
+                }
+                  router.push('/admin/login')
+                },
             }
         ]);
-    return {items}
+    return {items,isAdmin}
   }
 });
 </script>

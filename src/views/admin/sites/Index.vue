@@ -17,7 +17,7 @@ import { defineComponent,reactive,onMounted } from 'vue'
 import {
   getAuthDataFromStorage
 } from '@/utils/auth-data'
-import {Site} from '@/types/site';
+import { Site } from '@/types/site';
 import axios from "@/lib/axios"
 
 export default defineComponent({
