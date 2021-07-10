@@ -31,17 +31,27 @@
 <script lang="ts">
 import { createSite } from '@/api/admin/site'
 import { defineComponent, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+
 
 export default defineComponent({
   name: 'NewSite',
   setup () {
+    // ルーティング定義
+    const router = useRouter()
+    // const route = useRoute()
+
+    // サイト情報変数
     const siteData = reactive({
       name: '',
       description: '',
       url: '',
       price: ''
     })
+
+    // サイト情報をセットするためのFormData
     const formData = new FormData();
+    //画像アップロード時にformdataにセットする
     const setImage = (e: Event): void => {
       e.preventDefault();
       if (e.target instanceof HTMLInputElement && e.target.files) {
@@ -61,6 +71,8 @@ export default defineComponent({
       await createSite(formData)
         .then((res) => {
           console.log(res)
+          alert("サイト情報を登録しました")
+          router.push('/admin/sites')
         })
     }
 

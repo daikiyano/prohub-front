@@ -2,6 +2,9 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/public/Home.vue'
 import Login from '../views/admin/Login.vue'
 import NewSite from '../views/admin/sites/NewSite.vue'
+import IndexSite from '../views/admin/sites/Index.vue'
+import ShowSite from '../views/admin/sites/Show.vue'
+
 
 
 
@@ -20,6 +23,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/sites/new',
     name: 'NewSite',
     component: NewSite
+  },
+  {
+    path: '/admin/sites',
+    name: 'IndexSite',
+    component: IndexSite
+  },
+  {
+    path: '/admin/sites/:id',
+    name: 'ShowSite',
+    component: ShowSite
   },
   {
     path: '/about',
