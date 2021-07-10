@@ -1,10 +1,25 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <Header />
+    <!-- <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> -->
   </div>
   <router-view/>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Header from '@/components/Header.vue'; // @ is an alias to /src
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    Header,
+  },
+ 
+});
+</script>
+
 
 <style>
 #app {
@@ -15,7 +30,7 @@
   color: #2c3e50;
 }
 
-#nav {
+/* #nav {
   padding: 30px;
 }
 
@@ -26,5 +41,5 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>
