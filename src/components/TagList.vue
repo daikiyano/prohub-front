@@ -10,7 +10,8 @@
 
 <script lang="ts">
 import { defineComponent,PropType } from 'vue';
-import Tag from '@/types/tag';
+// import Tag from '@/types/tag';
+import  Tag  from "@/types/tag"
 import PrimeTag from 'primevue/tag';
 
 

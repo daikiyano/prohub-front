@@ -2,26 +2,44 @@
   <div class="flex items-center h-screen w-full bg-teal-lighter">
     <div class="w-full bg-white rounded shadow-lg p-8 m-4">
       <h1>New Post</h1>
-      <div class="flex flex-col mb-4">
-        <label for="name">Name</label>
-        <input v-model='name' type="text" name="first_name" id="first_name">
+      <div class="card">
+        <div class="p-fluid p-grid">
+          <div class="p-field p-col-12 p-md-4">
+            <span class="p-float-label">
+              <InputText id="name" type="text" v-model="name" />
+              <label for="name">サイト名</label>
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-4">
+            <span class="p-float-label">
+              <Textarea id="textarea" v-model="description" rows="10" />
+              <label for="textarea">サイト概要</label>
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-4">
+            <span class="p-float-label">
+              <InputText id="url" type="text" v-model="url" />
+              <label for="url">公式サイトURL</label>
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-4">
+            <span class="p-float-label">
+              <InputText id="price" type="text" v-model="price" />
+              <label for="price">価格</label>
+            </span>
+          </div>
+          <div class="flex flex-col mb-4">
+        <h5>サイト画像</h5>
+          <input type="file" id="image" name="image" accept="image/png,image/jpeg" @change="setImage($event)" />
+          <!-- <FileUpload mode="basic" name="demo[]" accept="image/png,image/jpeg" :customUpload="true" :auto="true" @uploader="setImage"/> -->
       </div>
-      <div class="flex flex-col mb-4">
-        <label for="description">Description</label>
-        <textarea v-model='description' name="body" id="body"></textarea>
+        </div>
       </div>
-      <div class="flex flex-col mb-4">
-        <label for="url">公式URL</label>
-        <textarea v-model='url' name="body" id="body"></textarea>
-      </div>
-      <div class="flex flex-col mb-4">
-        <label for="price">価格</label>
-        <textarea v-model='price' name="body" id="body"></textarea>
-      </div>
-      <div class="flex flex-col mb-4">
-        <label for="price">image</label>
-              <input type="file" id="image" name="image" accept="image/png,image/jpeg" @change="setImage($event)" />
-
+     
+       <div class="flex flex-col mb-4">
+        <label for="price">タグ</label>
+        <AutoComplete :multiple="true" v-model="selectedTags" :suggestions="filteredTags" @complete="searchTag($event)" field="name" />
+{{selectedTags}}
       </div>
       <button @click='handleCreateSite()' type="submit">Create Post</button>
     </div>
@@ -30,16 +48,28 @@
 
 <script lang="ts">
 import { createSite } from '@/api/admin/site'
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs,onMounted ,ref} from 'vue'
 import { useRouter } from 'vue-router'
+import {
+  getAuthDataFromStorage
+} from '@/utils/auth-data'
+// import { Tag } from "/app/src/types/tag"
+import  Tag  from '@/types/tag';
+import axios from "@/lib/axios"
+
+import AutoComplete from 'primevue/autocomplete';
+import Textarea from 'primevue/textarea';
 
 
 export default defineComponent({
   name: 'NewSite',
+  components: {
+    AutoComplete,
+    Textarea,
+  },
   setup () {
     // ルーティング定義
     const router = useRouter()
-    // const route = useRoute()
 
     // サイト情報変数
     const siteData = reactive({
@@ -49,8 +79,39 @@ export default defineComponent({
       price: ''
     })
 
+    const state = reactive({
+      tags: [] as Tag[]
+    })
+
+    onMounted(async() => {
+      const response = await axios.get<Tag[]>(
+        '/api/v1/admin/tags',
+        {
+      headers: getAuthDataFromStorage()
+    }
+      );
+      console.log(response.data)
+      console.log("heyyyyyyyy")
+      state.tags = response.data
+    })
+
+    const filteredTags = ref();
+    const selectedTags = ref([] as any);
+    const searchTag = (event: any) => {
+      setTimeout(() => {
+        if (!event.query.trim().length) {
+          filteredTags.value = [...state.tags];
+        } else {
+          filteredTags.value = state.tags.filter((country) => {
+            return country.name.toLowerCase().startsWith(event.query.toLowerCase());
+          });
+        }
+        }, 250);
+      };
+
     // サイト情報をセットするためのFormData
     const formData = new FormData();
+    //画像アップロード時にformdataにセットする
     //画像アップロード時にformdataにセットする
     const setImage = (e: Event): void => {
       e.preventDefault();
@@ -60,14 +121,16 @@ export default defineComponent({
     }
 
     const setFormData = (): void => {
-      formData.append('name',siteData.name)
-      formData.append('description',siteData.description)
-      formData.append('url',siteData.url)
-      formData.append('price',siteData.price)
+      formData.append('site[name]',siteData.name)
+      formData.append('site[description]',siteData.description)
+      formData.append('site[url]',siteData.url)
+      formData.append('site[price]',siteData.price)
+      formData.append('tag[tags]',JSON.stringify(selectedTags.value))
     }
 
     const handleCreateSite = async () => {
       setFormData()
+      console.log(formData)
       await createSite(formData)
         .then((res) => {
           console.log(res)
@@ -79,7 +142,11 @@ export default defineComponent({
     return {
       ...toRefs(siteData),
       handleCreateSite,
-      setImage
+      setImage,
+      searchTag,
+      filteredTags,
+      selectedTags,
+      state,
     }
   }
 })

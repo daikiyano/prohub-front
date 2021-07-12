@@ -5,7 +5,7 @@
      <div v-for="site in state.sites" :key="site.id">
        <a :href="'/sites/' + site.id">
           <img :src="site.image_url" alt="masi" style="height: 300px; width:400px;"/>
-          {{site.name}}
+          {{site}}
         </a>
       </div>  
     </div>
