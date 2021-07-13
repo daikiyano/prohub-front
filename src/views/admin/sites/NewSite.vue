@@ -116,7 +116,7 @@ export default defineComponent({
     const setImage = (e: Event): void => {
       e.preventDefault();
       if (e.target instanceof HTMLInputElement && e.target.files) {
-        formData.append('image',e.target.files[0])
+        formData.append('site[image]',e.target.files[0])
       }
     }
 
