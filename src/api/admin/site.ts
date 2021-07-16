@@ -16,3 +16,27 @@ export const createSite = async (formData: any) => {
       return res.data
     })
 }
+
+export const updateSite = async (formData: any,params: any) => {
+  return await axios.patch(
+    `/api/v1/admin/sites/${params}`, formData,
+    {
+      headers: getAuthDataFromStorage()
+    }
+  )
+    .then((res: AxiosResponse<Site>) => {
+      return res.data
+    })
+}
+
+export const deleteSite = async (params: any) => {
+  return await axios.delete(
+    `/api/v1/admin/sites/${params}`,
+    {
+      headers: getAuthDataFromStorage()
+    }
+  )
+    .then((res: AxiosResponse<Site>) => {
+      return res.data
+    })
+}

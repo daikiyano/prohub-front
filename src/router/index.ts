@@ -1,38 +1,59 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/public/Home.vue'
-import Login from '../views/admin/Login.vue'
-import NewSite from '../views/admin/sites/NewSite.vue'
-import IndexSite from '../views/admin/sites/Index.vue'
-import ShowSite from '../views/admin/sites/Show.vue'
+
+// 一般
+import Home from '../views/public/sites/Home.vue'
+import SiteIndex from '../views/public/sites/Index.vue'
+
+
+// 管理人用
+import AdminLogin from '../views/admin/Login.vue'
+import AdminNewSite from '../views/admin/sites/NewSite.vue'
+import AdminIndexSite from '../views/admin/sites/Index.vue'
+import AdminShowSite from '../views/admin/sites/Show.vue'
+import AdminEditSite from '../views/admin/sites/Edit.vue'
+
 
 
 
 
 const routes: Array<RouteRecordRaw> = [
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home
+  // },
+
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'SiteIndex',
+    component: SiteIndex
   },
+
+  // 管理人用
   {
     path: '/admin/login',
-    name: 'Login',
-    component: Login
+    name: 'AdminLogin',
+    component: AdminLogin
   },
   {
     path: '/admin/sites/new',
-    name: 'NewSite',
-    component: NewSite
+    name: 'AdminNewSite',
+    component: AdminNewSite
   },
   {
     path: '/admin/sites',
-    name: 'IndexSite',
-    component: IndexSite
+    name: 'AdminIndexSite',
+    component: AdminIndexSite
   },
   {
     path: '/admin/sites/:id',
-    name: 'ShowSite',
-    component: ShowSite
+    name: 'AdminShowSite',
+    component: AdminShowSite
+  },
+  {
+    path: '/admin/sites/:id/edit',
+    name: 'AdminEditSite',
+    component: AdminEditSite
   },
   {
     path: '/about',

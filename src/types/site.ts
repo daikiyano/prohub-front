@@ -1,14 +1,13 @@
 export type Site = {
-  id: number;
+  // id: number;
   image_url: string;
-  updated_at: string;
-  admin_id: number;
+  // updated_at: string;
+  // admin_id: number;
   name: string;
   description: string;
   url: string;
   price: string;
-  image: string;
-  createdAt: string;
+  // createdAt: string;
 }
 
-export type SiteForRequest = Pick<Site, 'name' | 'description' | 'url' | 'price' | 'image'>
+export type SiteForRequest = Pick<Site, 'name' | 'description' | 'url' | 'price'>

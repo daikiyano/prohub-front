@@ -1,48 +1,79 @@
 <template>
-<div>
-  <div>
-    <label for="email">
-      Email
-    </label>
-    <input v-model="email" id="Email" type="text" placeholder="Email">
-  </div>
-  <div>
-    <label for="password">
-      Password
-    </label>
-    <input v-model="password" id="password" type="password" placeholder="******************">
-    <button @click="handleLogin()">
-    Sign In
-  </button>
-   <button @click="checkAuth()">
-    認証チェック
-  </button>
-  </div>
+  <div class="flex items-center h-screen w-full bg-teal-lighter">
+    <div class="w-full bg-white rounded shadow-lg p-8 m-4">
+      <div class="card">
+        <h1>管理人用ログインフォーム</h1>
+        <form @submit.prevent="handleLogin(!v$.$invalid)" class="p-fluid">
+          <div class="p-field">
+            <div class="p-float-label p-input-icon-right">
+              <i class="pi pi-envelope" />
+              <InputText id="email" v-model="v$.email.$model" :class="{'p-invalid':v$.email.$invalid && submitted}"/>
+              <label for="email" :class="{'p-error':v$.email.$invalid && submitted}">Email*</label>
+              <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error">{{v$.email.required.$message.replace('Value', 'Email')}}</small>
+            </div>
+          </div>
+          <div class="p-field">
+            <div class="p-float-label p-input-icon-right">
+              <Password id="password" toggleMask v-model="v$.password.$model" :class="{'p-invalid':v$.password.$invalid && submitted}"/>
+              <label for="password" :class="{'p-error':v$.password.$invalid && submitted}">パスワード</label>
+              <small v-if="(v$.password.$invalid && submitted) || v$.password.$pending.$response" class="p-error">{{v$.password.required.$message.replace('Value', 'Password')}}</small>
+            </div>
+          </div>
+          <div class="p-field">
+            <Button type="submit" label="管理人ログイン" class="p-button-raised p-button-secondary" />
+          </div>
+        </form>
+          <div class="p-field">
+            <Button type="submit" @click="checkAuth()" label="認証チェック" class="p-button-success" />
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent,reactive, toRefs } from 'vue';
+import { defineComponent,reactive, toRefs, ref } from 'vue';
 import { login,judgeAdminAuthToken } from '@/api/admin/auth';
 
+// Vue Prime
+import Button from 'primevue/button';
+import Password from 'primevue/password';
+
+// Vuelidate
+import useVuelidate from '@vuelidate/core'
+import { required, email } from "@vuelidate/validators";
 
 export default defineComponent({
   name: 'Login',
+  components: {
+    Button,
+    Password
+  },
   setup() {
     const formData = reactive({
       email: '',
       password: ''
     })
-    // const checkAuth = () => {
-    //   console.log("checkouth");
-    // };
+
+    const rules = {
+      email: { required, email },
+      password: { required },
+    };
+
+    const submitted = ref(false);
+    const v$ = useVuelidate(rules, formData);
+
     const checkAuth = async () => {
       console.log("aassa")
       const data = await judgeAdminAuthToken().catch(() => alert('ログインに失敗しました。'));
     }
     return {
       ...toRefs(formData),
-      handleLogin: async () => {
+      handleLogin: async (isFormValid: any) => {
+        submitted.value = true;
+          if (!isFormValid) {
+            return;
+          }
         await login(formData.email, formData.password)
         .then((res) => {
           if (res?.status === 200) {
@@ -55,7 +86,9 @@ export default defineComponent({
           alert('ログインに失敗しました。')
         })
     },
-    checkAuth
+    checkAuth,
+    v$,
+    submitted
     }
   }
 });

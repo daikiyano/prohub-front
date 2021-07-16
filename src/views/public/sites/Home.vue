@@ -25,7 +25,7 @@ export default defineComponent({
     TagList,
   },
   setup() {
-    const message = ref("Hello Worlds");
+    const message = ref("Pro Hub");
      const state = reactive<State>({
       tags: []
     })
