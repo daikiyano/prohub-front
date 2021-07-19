@@ -3,6 +3,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 // 一般
 import Home from '../views/public/sites/Home.vue'
 import SiteIndex from '../views/public/sites/Index.vue'
+import Signup from '../views/public/Signup.vue'
+
 
 
 // 管理人用
@@ -22,7 +24,11 @@ const routes: Array<RouteRecordRaw> = [
   //   name: 'Home',
   //   component: Home
   // },
-
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup
+  },
   {
     path: '/',
     name: 'SiteIndex',
