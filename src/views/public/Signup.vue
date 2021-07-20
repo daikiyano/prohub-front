@@ -48,7 +48,8 @@
 
 <script lang="ts">
 import { defineComponent,reactive, toRefs, ref, computed } from 'vue';
-import { login,judgeAdminAuthToken } from '@/api/admin/auth';
+import { userSignup,judgeAdminAuthToken } from '@/api/public/user/auth';
+import { useRouter } from 'vue-router'
 
 // Vue Prime
 import Button from 'primevue/button';
@@ -65,6 +66,9 @@ export default defineComponent({
     Password
   },
   setup() {
+    // ルーティング定義
+    const router = useRouter()
+
     const formData = reactive({
       email: '',
       username: '',
@@ -95,17 +99,19 @@ export default defineComponent({
             return;
           }
           console.log("got it")
-        // await login(formData.email, formData.password)
-        // .then((res) => {
-        //   if (res?.status === 200) {
-        //     console.log(res)
-        //   } else {
-        //     alert('メールアドレスかパスワードが間違っています。')
-        //   }
-        //   })
-        // .catch(() => {
-        //   alert('ログインに失敗しました。')
-        // })
+        await userSignup(formData.email, formData.username,formData.password)
+        .then((res) => {
+          if (res?.status === 200) {
+            console.log(res)
+            alert("会員登録に成功しました")
+            router.push('/')
+          } else {
+            alert('サーバーでエラーが発生しました')
+          }
+          })
+        .catch(() => {
+          alert('ログインに失敗しました。')
+        })
     },
     checkAuth,
     v$,

@@ -2,9 +2,7 @@
   <div class="flex items-center h-screen w-full bg-teal-lighter">
     <div class="w-full bg-white rounded shadow-lg p-8 m-4">
       <div class="card">
-        <h1>管理人用ログインフォーム</h1>
-                {{!v$.$invalid}}
-
+        <h1>ログイン</h1>
         <form @submit.prevent="handleLogin(!v$.$invalid)" class="p-fluid">
           <div class="p-field">
             <div class="p-float-label p-input-icon-right">
@@ -22,12 +20,9 @@
             </div>
           </div>
           <div class="p-field">
-            <Button type="submit" label="管理人ログイン" class="p-button-raised p-button-secondary" />
+            <Button type="submit" label="ログイン" class="p-button-raised p-button-secondary" />
           </div>
         </form>
-          <div class="p-field">
-            <Button type="submit" @click="checkAuth()" label="認証チェック" class="p-button-success" />
-          </div>
       </div>
     </div>
   </div>
@@ -35,7 +30,9 @@
 
 <script lang="ts">
 import { defineComponent,reactive, toRefs, ref } from 'vue';
-import { adminLogin,judgeAdminAuthToken } from '@/api/admin/auth';
+import { userLogin } from '@/api/public/user/auth';
+import { useRouter } from 'vue-router'
+
 
 // Vue Prime
 import Button from 'primevue/button';
@@ -52,6 +49,9 @@ export default defineComponent({
     Password
   },
   setup() {
+     // ルーティング定義
+    const router = useRouter()
+    
     const formData = reactive({
       email: '',
       password: ''
@@ -65,10 +65,7 @@ export default defineComponent({
     const submitted = ref(false);
     const v$ = useVuelidate(rules, formData);
 
-    const checkAuth = async () => {
-      console.log("aassa")
-      const data = await judgeAdminAuthToken().catch(() => alert('ログインに失敗しました。'));
-    }
+   
     return {
       ...toRefs(formData),
       handleLogin: async (isFormValid: any) => {
@@ -76,10 +73,11 @@ export default defineComponent({
           if (!isFormValid) {
             return;
           }
-        await adminLogin(formData.email, formData.password)
+        await userLogin(formData.email, formData.password)
         .then((res) => {
           if (res?.status === 200) {
             console.log(res)
+            router.push('/')
           } else {
             alert('メールアドレスかパスワードが間違っています。')
           }
@@ -88,7 +86,6 @@ export default defineComponent({
           alert('ログインに失敗しました。')
         })
     },
-    checkAuth,
     v$,
     submitted
     }

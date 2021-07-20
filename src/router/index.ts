@@ -3,6 +3,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 // 一般
 import Home from '../views/public/sites/Home.vue'
 import SiteIndex from '../views/public/sites/Index.vue'
+import SiteShow from '../views/public/sites/Show.vue'
+import Login from '../views/public/Login.vue'
 import Signup from '../views/public/Signup.vue'
 
 
@@ -30,9 +32,19 @@ const routes: Array<RouteRecordRaw> = [
     component: Signup
   },
   {
+    path: '/Login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/',
     name: 'SiteIndex',
     component: SiteIndex
+  },
+  {
+    path: '/sites/:id',
+    name: 'SiteShow',
+    component: SiteShow
   },
 
   // 管理人用
