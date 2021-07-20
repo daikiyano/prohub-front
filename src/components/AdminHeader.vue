@@ -2,7 +2,7 @@
   <div>
     <Menubar :model="items">
       <template #start>
-        ProHub{{uid}}
+        ProHub Admin
       </template>
       <template #end>
         <InputText placeholder="Search" type="text" />
@@ -14,8 +14,8 @@
 <script lang="ts">
 import { defineComponent,ref } from 'vue';
 import {
-  removeAuthUserDataFromStorage
-} from '@/utils/user-data'
+  removeAuthAdminDataFromStorage
+} from '@/utils/auth-data'
 import { useRouter } from 'vue-router'
 
 //Prime Vue
@@ -25,7 +25,7 @@ import Menubar from 'primevue/menubar';
 
 
 export default defineComponent({
-  name: 'Header',
+  name: 'AdminHeader',
   components: {
     Menubar
   },
@@ -35,7 +35,7 @@ export default defineComponent({
     const router = useRouter()
    // Prime vue
     
-    const uid = localStorage.getItem('uid')
+    const isAdmin = localStorage.getItem('admin')
     const items = ref([
             {
                 label:'サイト',
@@ -54,18 +54,18 @@ export default defineComponent({
                ]
             },
             {
-               label: uid ? "Log out" : "Log in",
+               label: isAdmin ? "Log out" : "Log in",
                icon:'pi pi-fw pi-power-off',
                command: () => {
-                if (uid) {
-                  removeAuthUserDataFromStorage()
-                  router.push('/')
+                if (isAdmin) {
+                  removeAuthAdminDataFromStorage()
+                  router.push('/admin/login')
                 }
-                  router.push('/login')
+                  router.push('/admin/login')
                 },
             }
         ]);
-    return { items,uid }
+    return {items,isAdmin}
   }
 });
 </script>

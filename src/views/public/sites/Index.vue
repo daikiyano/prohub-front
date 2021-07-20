@@ -1,23 +1,21 @@
 <template>
   <div>
-   <Splitter style="height: 300px">
-	<SplitterPanel :size="20">
-		Panel 1
-	</SplitterPanel>
-	<SplitterPanel :size="80">
-		Panel 2
-	</SplitterPanel>
-</Splitter>
       <h1>一覧ページ</h1>
         <div class="p-d-flex items-center">
           <div v-for="site in state.sites" :key="site.id" class="card">
             <div class="p-shadow-1 p-col p-m-4">
               <h1>{{site['name']}}</h1>
-              <a :href="'/admin/sites/' + site['id']">
+              <a :href="'/sites/' + site['id']">
                 <img :src="site['image_url']" alt="masi" style="height: 300px; width:500px;"/>
               </a>
             <PrimeTag v-for="tag in site['tags']" :key="tag['id']" :value="tag['name']" class="p-mr-2"></PrimeTag>
             </div>
+            <star-rating
+             v-bind:increment="0.1"
+             v-bind:star-size="20"
+             :show-rating="false"
+             :read-only="true"
+            ></star-rating>
           </div>
         </div>
 	
@@ -27,21 +25,18 @@
 <script lang="ts">
 import { defineComponent,reactive,onMounted } from 'vue'
 import {
-  getAuthDataFromStorage
+  getAuthAdminDataFromStorage
 } from '@/utils/auth-data'
 import { Site } from '@/types/site';
 import axios from "@/lib/axios"
 
 import PrimeTag from 'primevue/tag';
-import Splitter from 'primevue/splitter';
-import SplitterPanel from 'primevue/splitterpanel';
+
 
 export default defineComponent({
   name: 'IndexSite',
   components: {
-    PrimeTag,
-    Splitter,
-    SplitterPanel
+    PrimeTag
   },
   setup () {
     const state = reactive({
@@ -50,10 +45,7 @@ export default defineComponent({
 
     onMounted(async() => {
       const response = await axios.get<Site[]>(
-        '/api/v1/admin/sites',
-        {
-      headers: getAuthDataFromStorage()
-    }
+        '/api/v1/public/sites'
       );
       state.sites = response.data
     })
