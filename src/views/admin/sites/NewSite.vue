@@ -52,7 +52,7 @@ import { createSite } from '@/api/admin/site'
 import { defineComponent, reactive, toRefs,onMounted ,ref} from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  getAuthDataFromStorage
+  getAuthAdminDataFromStorage
 } from '@/utils/auth-data'
 
 // 型定義
@@ -108,7 +108,7 @@ export default defineComponent({
       const response = await axios.get<Tag[]>(
         '/api/v1/admin/tags',
         {
-      headers: getAuthDataFromStorage()
+      headers: getAuthAdminDataFromStorage()
     }
       );
       console.log(response.data)

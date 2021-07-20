@@ -54,7 +54,7 @@ import { defineComponent,onMounted, reactive, ref } from 'vue'
 import { updateSite } from '@/api/admin/site'
 
 import {
-  getAuthDataFromStorage
+  getAuthAdminDataFromStorage
 } from '@/utils/auth-data'
 import { useRoute,useRouter } from 'vue-router'
 
@@ -126,7 +126,7 @@ export default defineComponent({
       const response = await axios.get<any>(
         `/api/v1/admin/sites/${route.params.id}`,
         {
-      headers: getAuthDataFromStorage()
+      headers: getAuthAdminDataFromStorage()
     }
       );
       console.log(response.data)
@@ -160,7 +160,7 @@ export default defineComponent({
       const response = await axios.get<Tag[]>(
         '/api/v1/admin/tags',
         {
-      headers: getAuthDataFromStorage()
+      headers: getAuthAdminDataFromStorage()
     }
       );
       console.log(response.data)

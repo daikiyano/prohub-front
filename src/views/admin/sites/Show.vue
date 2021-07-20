@@ -20,7 +20,7 @@
 import { defineComponent,onMounted, reactive } from 'vue'
 import { deleteSite } from '@/api/admin/site'
 import {
-  getAuthDataFromStorage
+  getAuthAdminDataFromStorage
 } from '@/utils/auth-data'
 import { useRoute,useRouter } from 'vue-router'
 import {Site} from '@/types/site';
@@ -47,7 +47,7 @@ export default defineComponent({
       const response = await axios.get<Site[]>(
         `/api/v1/admin/sites/${route.params.id}`,
         {
-      headers: getAuthDataFromStorage()
+      headers: getAuthAdminDataFromStorage()
     }
       );
       console.log(response.data)
