@@ -86,7 +86,7 @@ export default defineComponent({
     const router = useRouter()
 
     // サイト関連
-    const siteData = reactive<Site>({
+    const siteData = reactive({
       name: '',
       description: '',
       url: '',

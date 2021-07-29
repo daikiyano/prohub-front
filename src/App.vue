@@ -2,10 +2,13 @@
   <div id="nav">
     <AdminHeader v-if="isAdmin" />
     <Header v-if="!isAdmin" />
-    <!-- <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> -->
-  </div>
+    <div class="p-lg-2 p-col-0" style="height: 100%; background-color: red;">
+      aaaaa
+    </div>
+  <div class="p-lg-10 p-col-12">
   <router-view/>
+  </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,7 +21,7 @@ export default defineComponent({
   name: 'App',
   components: {
     AdminHeader,
-    Header
+    Header,
   },
   setup() {
     const isAdmin = localStorage.getItem('admin')

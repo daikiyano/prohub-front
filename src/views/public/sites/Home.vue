@@ -38,12 +38,6 @@ export default defineComponent({
       
       
     })
-    // 通常メソッドの書き方
-    // const getTag = async () => {
-    //   const response = await axios.get('http://localhost:3000/api/v1/public/sites')
-    //   // state.tags = response.data
-    //   // console.log(state.tags)      
-    // }
 
     return {
       message,

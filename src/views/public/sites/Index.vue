@@ -1,34 +1,33 @@
 <template>
   <div>
+
       <h1>一覧ページ</h1>
         <div class="p-d-flex items-center">
-          <div v-for="site in state.sites" :key="site.id" class="card">
-            <div class="p-shadow-1 p-col p-m-4">
+          <div v-for="site in state.sites" :key="site.id">
+            <Card style="margin: 0 auto; margin-top: 50px; width: 30em;" class="p-mr-5">
+              <template #header>
               <h1>{{site['name']}}</h1>
+              </template>
+               <template #title>
               <a :href="'/sites/' + site['id']">
-                <img :src="site['image_url']" alt="masi" style="height: 300px; width:500px;"/>
+                <img :src="site['image_url']" alt="masi" style="height: 270px; width:100%;"/>
               </a>
-            <PrimeTag v-for="tag in site['tags']" :key="tag['id']" :value="tag['name']" class="p-mr-2"></PrimeTag>
-            </div>
-            <star-rating
-             v-bind:increment="0.1"
-             v-bind:star-size="20"
-             :show-rating="false"
-             :read-only="true"
-            ></star-rating>
+              <template v-for="tag in site['tags']" :key="tag['name']">
+              <a :href="`/tags/${tag['name']}`"><PrimeTag :value="tag['name']" class="p-mr-2 p-text-left"></PrimeTag></a>
+              </template>
+              </template>
+             </Card>
           </div>
         </div>
-	
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent,reactive,onMounted } from 'vue'
-import {
-  getAuthAdminDataFromStorage
-} from '@/utils/auth-data'
 import { Site } from '@/types/site';
 import axios from "@/lib/axios"
+import Card from 'primevue/card';
+
 
 import PrimeTag from 'primevue/tag';
 
@@ -36,7 +35,8 @@ import PrimeTag from 'primevue/tag';
 export default defineComponent({
   name: 'IndexSite',
   components: {
-    PrimeTag
+    PrimeTag,
+    Card
   },
   setup () {
     const state = reactive({

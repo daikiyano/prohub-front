@@ -7,6 +7,7 @@ export type Site = {
   description: string;
   url: string;
   price: string;
+  sites: object;
   // createdAt: string;
 }
 

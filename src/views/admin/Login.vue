@@ -36,6 +36,7 @@
 <script lang="ts">
 import { defineComponent,reactive, toRefs, ref } from 'vue';
 import { adminLogin,judgeAdminAuthToken } from '@/api/admin/auth';
+import {  useRouter } from 'vue-router'
 
 // Vue Prime
 import Button from 'primevue/button';
@@ -52,6 +53,8 @@ export default defineComponent({
     Password
   },
   setup() {
+    const router = useRouter()
+
     const formData = reactive({
       email: '',
       password: ''
@@ -80,6 +83,8 @@ export default defineComponent({
         .then((res) => {
           if (res?.status === 200) {
             console.log(res)
+            router.push(`/admin/sites`)
+            alert('ログインに成功しました')
           } else {
             alert('メールアドレスかパスワードが間違っています。')
           }

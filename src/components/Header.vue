@@ -44,9 +44,9 @@ export default defineComponent({
                     {
                         label:'一覧',
                         icon:'pi pi-fw pi-pencil',
-                        to: "/admin/sites",
+                        to: "/",
                         command: () => {
-                          router.push('/admin/sites')
+                          router.push('/')
                         }
                        
                     },
@@ -70,5 +70,12 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.p-menubar {
+  background-color: rgba(2, 184, 117, 1);
+  color: white;
+}
 
+.p-menubar-root-list	{
+  color: white;
+}
 </style>

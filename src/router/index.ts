@@ -4,6 +4,12 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/public/sites/Home.vue'
 import SiteIndex from '../views/public/sites/Index.vue'
 import SiteShow from '../views/public/sites/Show.vue'
+import TagShow from '../views/public/tags/Show.vue'
+import TagIndex from '../views/public/tags/Index.vue'
+import ArticleNew from '../views/public/articles/New.vue'
+import ArticleIndex from '../views/public/articles/Index.vue'
+
+
 import Login from '../views/public/Login.vue'
 import Signup from '../views/public/Signup.vue'
 
@@ -45,6 +51,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sites/:id',
     name: 'SiteShow',
     component: SiteShow
+  },
+  {
+    path: '/tags',
+    name: 'TagIndex',
+    component: TagIndex
+  },
+  {
+    path: '/tags/:id',
+    name: 'TagShow',
+    component: TagShow
+  },
+  {
+    path: '/articles/new',
+    name: 'ArticleNew',
+    component: ArticleNew
+  },
+  {
+    path: '/articles',
+    name: 'ArticleIndex',
+    component: ArticleIndex
   },
 
   // 管理人用
