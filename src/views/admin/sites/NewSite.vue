@@ -56,7 +56,7 @@ import {
 } from '@/utils/auth-data'
 
 // 型定義
-import  Tag  from '@/types/tag';
+import  {Tag}  from '@/types/tag';
 import axios from "@/lib/axios"
 
 // Vue Prime

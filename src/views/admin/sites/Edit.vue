@@ -60,7 +60,7 @@ import { useRoute,useRouter } from 'vue-router'
 
 // 型定義
 import {Site} from '@/types/site';
-import  Tag  from '@/types/tag';
+import  {Tag } from '@/types/tag';
 import axios from "@/lib/axios"
 
 // Vue Prime
