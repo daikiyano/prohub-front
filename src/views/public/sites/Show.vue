@@ -105,7 +105,6 @@ export default defineComponent({
       sites: [] as Site[]
     })
     const commentData = reactive<SiteComment>({
-      id: null,
       review: 0,
       comment: '' 
     })
@@ -126,7 +125,7 @@ export default defineComponent({
       state.sites = response.data
     })
 
-    const handleCreateSiteComment = async (isFormValid: any) => {
+    const handleCreateSiteComment = async (isFormValid: boolean) => {
       submitted.value = true;
       console.log("hey")
       if (!isFormValid) {

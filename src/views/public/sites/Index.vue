@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent,reactive,onMounted } from 'vue'
-import { Site } from '@/types/site';
+import { SiteForIndex } from '@/types/site';
 import axios from "@/lib/axios"
 import Card from 'primevue/card';
 
@@ -40,14 +40,15 @@ export default defineComponent({
   },
   setup () {
     const state = reactive({
-      sites: [] as Site[]
+      sites: [] as SiteForIndex[]
     })
 
     onMounted(async() => {
-      const response = await axios.get<Site[]>(
+      const response = await axios.get<SiteForIndex[]>(
         '/api/v1/public/sites'
       );
       state.sites = response.data
+      console.log(response.data)
     })
 
     return {
