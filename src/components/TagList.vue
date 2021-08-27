@@ -1,16 +1,17 @@
 <template>
-  <div class="hello" style="width: 200px;">
-    <span v-for="tag in tags" :key="tag.id">
-      <PrimeTag :value="tag.name"></PrimeTag>
-
-        <!-- <h2> {{ tag.name }}</h2> -->
-      </span>   
+  <div class="hello">
+    <template v-for="tag in tags" :key="tag.id">
+      <a :href="`/tags/${tag['name']}`">
+        <PrimeTag :value="tag.name" class="p-mr-2 p-mt-2"></PrimeTag>
+      </a>
+    </template>   
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent,PropType } from 'vue';
-import Tag from '@/types/tag';
+// import Tag from '@/types/tag';
+import  {Tag}  from "@/types/tag"
 import PrimeTag from 'primevue/tag';
 
 
@@ -32,4 +33,8 @@ export default defineComponent({
 </script>
 <style scoped>
 
+.p-tag	{
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+}
 </style>

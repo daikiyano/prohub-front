@@ -1,13 +1,13 @@
 import { AdminUser } from '@/types/admin-user'
 import {
-  getAuthDataFromStorage,
-  removeAuthDataFromStorage,
+  getAuthAdminDataFromStorage,
+  removeAuthAdminDataFromStorage,
   setAuthAdminDataFromResponse
 } from '@/utils/auth-data'
 import axios from "@/lib/axios"
 import { AxiosResponse, AxiosError } from 'axios'
 
-export const login = async (email: string, password: string) => {
+export const adminLogin = async (email: string, password: string) => {
   return await axios.post<AdminUser>('/api/v1/admin_auth/sign_in', { email, password })
     .then((res: AxiosResponse<AdminUser>) => {
       console.log(res.data)
@@ -20,12 +20,12 @@ export const login = async (email: string, password: string) => {
 }
 
 export const logout = async () => {
-  return await axios.delete('/api/v1/admin_auth/sign_out', { headers: getAuthDataFromStorage() })
+  return await axios.delete('/api/v1/admin_auth/sign_out', { headers: getAuthAdminDataFromStorage() })
     .then(() => {
-      removeAuthDataFromStorage()
+      removeAuthAdminDataFromStorage()
     })
 }
 
 export const judgeAdminAuthToken = async () => {
-  return await axios.get('/api/v1/admin_auth/validate_token', { headers: getAuthDataFromStorage() })
+  return await axios.get('/api/v1/admin_auth/validate_token', { headers: getAuthAdminDataFromStorage() })
 }

@@ -1,8 +1,8 @@
 import { AuthHeaders } from '@/types/auth'
-import { AdminUser } from '@/types/admin-user'
+import { User } from '@/types/user'
 
 
-export const getAuthAdminDataFromStorage = (): AuthHeaders => {
+export const getAuthUserDataFromStorage = (): AuthHeaders => {
   return {
     'access-token': localStorage.getItem('access-token'),
     'client': localStorage.getItem('client'),
@@ -12,18 +12,16 @@ export const getAuthAdminDataFromStorage = (): AuthHeaders => {
   }
 }
 
-export const setAuthAdminDataFromResponse = (authData: AuthHeaders,adminData: AdminUser): void => {
-  console.log(adminData['data']['admin'])
+export const setAuthUserDataFromResponse = (authData: AuthHeaders): void => {
   if (authData['access-token'] && authData['client'] && authData['uid'] && authData['expiry']) {
     localStorage.setItem('access-token', authData['access-token'])
     localStorage.setItem('client', authData['client'])
     localStorage.setItem('uid', authData['uid'])
     localStorage.setItem('expiry', authData['expiry'])
-    localStorage.setItem('admin', adminData['data']['admin'])
   }
 }
 
-export const removeAuthAdminDataFromStorage = (): void => {
+export const removeAuthUserDataFromStorage = (): void => {
   localStorage.removeItem('access-token')
   localStorage.removeItem('client')
   localStorage.removeItem('uid')

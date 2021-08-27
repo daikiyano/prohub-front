@@ -10,6 +10,7 @@
 import { defineComponent,ref,reactive,onMounted } from 'vue';
 import TagList from '@/components/TagList.vue'; // @ is an alias to /src
 import Tag from '@/types/tag';
+
 import axios from "@/lib/axios"
 
 
@@ -24,7 +25,7 @@ export default defineComponent({
     TagList,
   },
   setup() {
-    const message = ref("Hello Worlds");
+    const message = ref("Pro Hub");
      const state = reactive<State>({
       tags: []
     })
@@ -37,12 +38,6 @@ export default defineComponent({
       
       
     })
-    // 通常メソッドの書き方
-    // const getTag = async () => {
-    //   const response = await axios.get('http://localhost:3000/api/v1/public/sites')
-    //   // state.tags = response.data
-    //   // console.log(state.tags)      
-    // }
 
     return {
       message,

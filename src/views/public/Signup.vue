@@ -2,9 +2,7 @@
   <div class="flex items-center h-screen w-full bg-teal-lighter">
     <div class="w-full bg-white rounded shadow-lg p-8 m-4">
       <div class="card">
-        <h1>管理人用ログインフォーム</h1>
-                {{!v$.$invalid}}
-
+        <h1>会員登録</h1>
         <form @submit.prevent="handleLogin(!v$.$invalid)" class="p-fluid">
           <div class="p-field">
             <div class="p-float-label p-input-icon-right">
@@ -16,13 +14,28 @@
           </div>
           <div class="p-field">
             <div class="p-float-label p-input-icon-right">
+              <i class="pi pi-envelope" />
+              <InputText id="username" v-model="v$.username.$model" :class="{'p-invalid':v$.username.$invalid && submitted}"/>
+              <label for="username" :class="{'p-error':v$.username.$invalid && submitted}">ユーザー名*</label>
+              <small v-if="(v$.username.$invalid && submitted) || v$.username.$pending.$response" class="p-error">{{v$.username.required.$message.replace('Value', 'username')}}</small>
+            </div>
+          </div>
+          <div class="p-field">
+            <div class="p-float-label p-input-icon-right">
               <Password id="password" toggleMask v-model="v$.password.$model" :class="{'p-invalid':v$.password.$invalid && submitted}"/>
               <label for="password" :class="{'p-error':v$.password.$invalid && submitted}">パスワード</label>
               <small v-if="(v$.password.$invalid && submitted) || v$.password.$pending.$response" class="p-error">{{v$.password.required.$message.replace('Value', 'Password')}}</small>
             </div>
           </div>
           <div class="p-field">
-            <Button type="submit" label="管理人ログイン" class="p-button-raised p-button-secondary" />
+            <div class="p-float-label p-input-icon-right">
+              <Password id="confirm_password" toggleMask v-model="v$.confirm_password.$model" :class="{'p-invalid':v$.confirm_password.$invalid && submitted}"/>
+              <label for="confirm_password" :class="{'p-error':v$.confirm_password.$invalid && submitted}">パスワード(確認用)</label>
+              <small v-if="(v$.confirm_password.sameAsPassword.$invalid && submitted) || v$.confirm_password.sameAsPassword.$pending.$response" class="p-error">{{v$.confirm_password.sameAsPassword.$message.replace('Value', 'Confirm Password')}}</small>
+            </div>
+          </div>
+          <div class="p-field">
+            <Button type="submit" label="会員登録" class="p-button-raised p-button-secondary" />
           </div>
         </form>
           <div class="p-field">
@@ -34,9 +47,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,reactive, toRefs, ref } from 'vue';
-import { adminLogin,judgeAdminAuthToken } from '@/api/admin/auth';
-import {  useRouter } from 'vue-router'
+import { defineComponent,reactive, toRefs, ref, computed } from 'vue';
+import { userSignup,judgeAdminAuthToken } from '@/api/public/user/auth';
+import { useRouter } from 'vue-router'
 
 // Vue Prime
 import Button from 'primevue/button';
@@ -44,25 +57,30 @@ import Password from 'primevue/password';
 
 // Vuelidate
 import useVuelidate from '@vuelidate/core'
-import { required, email } from "@vuelidate/validators";
+import { required, email,sameAs } from "@vuelidate/validators";
 
 export default defineComponent({
-  name: 'Login',
+  name: 'Signup',
   components: {
     Button,
     Password
   },
   setup() {
+    // ルーティング定義
     const router = useRouter()
 
     const formData = reactive({
       email: '',
-      password: ''
+      username: '',
+      password: '',
+      confirm_password: ''
     })
-
+    const passwordRef = computed(() => formData.password);
     const rules = {
       email: { required, email },
+      username: { required },
       password: { required },
+      confirm_password: { sameAsPassword: sameAs(passwordRef)},
     };
 
     const submitted = ref(false);
@@ -76,17 +94,19 @@ export default defineComponent({
       ...toRefs(formData),
       handleLogin: async (isFormValid: any) => {
         submitted.value = true;
+        console.log("got itaa")
           if (!isFormValid) {
             return;
           }
-        await adminLogin(formData.email, formData.password)
+          console.log("got it")
+        await userSignup(formData.email, formData.username,formData.password)
         .then((res) => {
           if (res?.status === 200) {
             console.log(res)
-            router.push(`/admin/sites`)
-            alert('ログインに成功しました')
+            alert("会員登録に成功しました")
+            router.push('/')
           } else {
-            alert('メールアドレスかパスワードが間違っています。')
+            alert('サーバーでエラーが発生しました')
           }
           })
         .catch(() => {
